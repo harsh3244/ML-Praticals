@@ -1,76 +1,111 @@
-# ML Practical Notebooks
+# Loan Approval Logistic Regression Model
 
-This repository contains Jupyter notebooks for machine learning practicals and small data science exercises.
+This project trains a logistic regression classifier to predict whether a loan application is approved or rejected based on applicant and loan information.
 
-## Requirements
+## Project Overview
 
-- Python 3.10 or later
-- Jupyter Notebook or JupyterLab
-- `pandas`, `numpy`, `scikit-learn`, and `matplotlib`
+The dataset includes over 45,000 loan records and contains a target variable named `loan_status`:
 
-## Step-by-Step Setup
+- `1` = approved
+- `0` = rejected
 
-1. Clone the repository:
+The model uses a mix of numeric and categorical features, including:
 
-```bash
-git clone <your-github-repo-url>
-cd "ML Praticals"
-```
+- `person_gender`
+- `person_education`
+- `person_home_ownership`
+- `loan_intent`
+- `previous_loan_defaults_on_file`
+- numeric financial features such as income, amount, interest rate, and credit score
 
-2. Create a virtual environment:
+The solution includes:
+
+- data exploration and missing-value handling
+- categorical encoding
+- train/test split with stratification
+- feature scaling with `StandardScaler`
+- logistic regression training with class balancing
+- evaluation metrics and visual diagnostics
+- output file generation for reporting and interpretation
+
+## How to Run
+
+1. Open a terminal in the project folder.
+2. Create and activate a virtual environment (optional but recommended):
 
 ```bash
 python -m venv .venv
-```
-
-3. Activate the virtual environment:
-
-On macOS or Linux:
-
-```bash
 source .venv/bin/activate
 ```
 
-On Windows:
+3. Install dependencies:
 
 ```bash
-.venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
-4. Install the required packages:
+4. Ensure the dataset file `loan_data.csv` is available in the project folder. If it is in another folder, you can pass the path explicitly:
 
 ```bash
-pip install pandas numpy scikit-learn matplotlib notebook
+python complete_ml_solution.py --data-path /path/to/loan_data.csv
 ```
 
-If you prefer JupyterLab, install it too:
+5. Run the script:
 
 ```bash
-pip install jupyterlab
+python complete_ml_solution.py
 ```
 
-5. Start Jupyter:
+## Expected Outputs
 
-```bash
-jupyter notebook
-```
+When the script runs successfully, it will produce:
 
-or
+- console output with model summary and metrics
+- a PNG file named `logistic_regression_results.png`
+- sample predictions with approval probabilities
 
-```bash
-jupyter lab
-```
+The image includes four plots:
 
-6. Open the notebook you want to run, such as `hwq1.ipynb`, and execute the cells from top to bottom.
+1. confusion matrix heatmap
+2. ROC curve with AUC score
+3. top 10 feature coefficients
+4. prediction probability distribution
 
-## Included Files
+## How to Interpret Metrics
 
-- `hwq1.ipynb` - Linear regression example using temperature and ice cream sales data.
-- `hwq2.ipynb` - Another practical notebook.
-- `demo.ipynb`, `demo2.ipynb` - Demo notebooks.
-- `data.csv`, `datahwq1.csv`, `datahwq2.csv`, `dataq2.csv` - Dataset files used by the notebooks.
+### Accuracy
+Measures the percentage of total predictions that are correct.
 
-## Notes
+### Precision
+Of all the predicted loan approvals, how many were actually approved?
 
-- Make sure the dataset files stay in the same folder as the notebooks.
-- If a notebook does not open correctly, restart the kernel and run all cells again.
+### Recall
+Of all the actual approved loans, how many were correctly identified?
+
+### F1-Score
+A balanced metric between precision and recall, useful when classes are imbalanced.
+
+### ROC-AUC
+Measures how well the model distinguishes between approved and rejected loans. A value closer to 1 indicates stronger discrimination.
+
+### Confusion Matrix
+Breakdown of model decisions:
+
+- TN: true negatives (rejected correctly)
+- FP: false positives (predicted approved but actually rejected)
+- FN: false negatives (predicted rejected but actually approved)
+- TP: true positives (approved correctly)
+
+## Key Findings
+
+- Logistic regression is a strong baseline for loan approval classification because the dataset is well-structured and the target is binary.
+- Class balancing helps the model handle the class imbalance that is common in approval datasets.
+- Feature coefficients show which variables most strongly influence the approval decision.
+- The ROC curve and AUC score help determine how well the model separates approved and rejected applications.
+- The probability distribution shows the model's confidence level across predictions, which is useful for understanding risk and approval thresholds.
+
+## Recommended Next Steps
+
+- Tune the decision threshold if your business prefers fewer false approvals or fewer false rejections.
+- Test additional models such as random forest or XGBoost for comparison.
+- Use this script as a baseline before moving to more advanced production pipelines.
